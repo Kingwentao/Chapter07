@@ -2,6 +2,7 @@
 package com.sample.systrace;
 
 import android.os.Bundle;
+import android.os.Trace;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Trace.beginSection("START_TEST");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Trace.endSection();
         Log.i(TAG, "[onResume]");
     }
 
@@ -29,5 +37,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

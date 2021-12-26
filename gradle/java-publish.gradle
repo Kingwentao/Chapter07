@@ -1,7 +1,4 @@
-
 apply plugin: 'maven-publish'
-
-
 
 def javadocJar = task("javadocJar", type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -25,7 +22,6 @@ publishing {
         }
     }
 }
-
 
 task buildAndPublishToLocalMaven(type: Copy, dependsOn: ['build', 'publishToMavenLocal']) {
     group = 'geektime'

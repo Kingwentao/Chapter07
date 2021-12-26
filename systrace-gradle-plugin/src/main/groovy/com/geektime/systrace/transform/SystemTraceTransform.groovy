@@ -179,7 +179,7 @@ public class SystemTraceTransform extends BaseProxyTransform {
                     // src jar.
                     final File realJarInput = new File(realJarInputFullPath)
                     // dest jar, moved to extraguard intermediate output dir.
-                    final File realJarOutput = new File(rootOutput, getUniqueJarName(realJarInput))
+                    File realJarOutput = new File(rootOutput, getUniqueJarName(realJarInput))
 
                     if (realJarInput.exists() && Util.isRealZipOrJar(realJarInput)) {
                         jarInputMaps.put(realJarInput, realJarOutput)

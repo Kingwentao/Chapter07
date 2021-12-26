@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.sample.systrace"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion 18
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -26,5 +26,4 @@ systrace {
     enable = true
     baseMethodMapFile = "${project.buildDir}/systrace_output/Debug.methodmap"
     blackListFile = "${project.projectDir}/blacklist/blackMethodList.txt"
-
 }

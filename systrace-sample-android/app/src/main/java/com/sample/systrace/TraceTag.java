@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Trace;
 
-
-
 public class TraceTag {
 
     private static final String TAG = "TraceTag";
