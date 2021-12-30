@@ -16,16 +16,13 @@ class SystracePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.extensions.create("systrace", SystraceExtension)
-
         if (!project.plugins.hasPlugin('com.android.application')) {
             throw new GradleException('Systrace Plugin, Android Application plugin required')
         }
-
         project.afterEvaluate {
             def android = project.extensions.android
             def configuration = project.systrace
             android.applicationVariants.all { variant ->
-
                 String output = configuration.output
                 if (Util.isNullOrNil(output)) {
                     configuration.output = project.getBuildDir().getAbsolutePath() + File.separator + "systrace_output"
@@ -33,6 +30,7 @@ class SystracePlugin implements Plugin<Project> {
                 }
 
                 Log.i(TAG, "Trace enable is %s", configuration.enable)
+                // 判断是否开启trace功能
                 if (configuration.enable) {
                     SystemTraceTransform.inject(project, variant)
                 }

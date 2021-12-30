@@ -34,7 +34,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 TestIgnoreFile.TestGc();
+                clickMe();
             }
         });
+    }
+
+    private void clickMe() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

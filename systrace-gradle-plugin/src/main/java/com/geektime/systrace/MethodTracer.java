@@ -272,7 +272,9 @@ public class MethodTracer {
                         sectionName = sectionName.substring(length - TraceBuildConstants.MAX_SECTION_NAME_LEN);
                     }
                 }
+                // visitLdcInsn：加载到堆栈上的常量
                 mv.visitLdcInsn(sectionName);
+                // visitMethodInsn：调用方法的指令，这里调用TraceTag的i方法
                 mv.visitMethodInsn(INVOKESTATIC, TraceBuildConstants.MATRIX_TRACE_METHOD_BEAT_CLASS, "i", "(Ljava/lang/String;)V", false);
             }
         }
@@ -288,7 +290,6 @@ public class MethodTracer {
             //}
             TraceMethod traceMethod = mCollectedMethodMap.get(methodName);
             if (traceMethod != null) {
-
                 traceMethodCount.incrementAndGet();
                 //mv.visitLdcInsn(traceMethod.id);
                 mv.visitMethodInsn(INVOKESTATIC, TraceBuildConstants.MATRIX_TRACE_METHOD_BEAT_CLASS, "o", "()V", false);

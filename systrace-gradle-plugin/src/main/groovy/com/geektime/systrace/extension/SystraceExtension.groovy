@@ -6,13 +6,11 @@ class SystraceExtension {
     String blackListFile
     String output
 
-
     SystraceExtension() {
         enable = true
         baseMethodMapFile = ""
         blackListFile = ""
         output = ""
-
     }
 
     @Override

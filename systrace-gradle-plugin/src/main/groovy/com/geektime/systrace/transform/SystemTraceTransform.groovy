@@ -33,22 +33,20 @@ public class SystemTraceTransform extends BaseProxyTransform {
     }
 
     public static void inject(Project project, def variant) {
-
         String hackTransformTaskName = getTransformTaskName(
                  "",
                 "",variant.name
         )
-
         String hackTransformTaskNameForWrapper = getTransformTaskName(
                  "",
                 "Builder",variant.name
         )
-
         project.logger.info("prepare inject dex transform :" + hackTransformTaskName +" hackTransformTaskNameForWrapper:"+hackTransformTaskNameForWrapper)
-
+        // 当执行图配置好会执行通知
         project.getGradle().getTaskGraph().addTaskExecutionGraphListener(new TaskExecutionGraphListener() {
             @Override
             public void graphPopulated(TaskExecutionGraph taskGraph) {
+                // 遍历task的执行图,在执行任何任务之前，将调用此方法。
                 for (Task task : taskGraph.getAllTasks()) {
                     if ((task.name.equalsIgnoreCase(hackTransformTaskName) || task.name.equalsIgnoreCase(hackTransformTaskNameForWrapper))
                             && !(((TransformTask) task).getTransform() instanceof SystemTraceTransform)) {
@@ -56,6 +54,7 @@ public class SystemTraceTransform extends BaseProxyTransform {
                         project.logger.info("variant name: " + variant.name)
                         Field field = TransformTask.class.getDeclaredField("transform")
                         field.setAccessible(true)
+                        // 设置task的transform为自定义的SystemTraceTransform
                         field.set(task, new SystemTraceTransform(project, variant, task.transform))
                         project.logger.warn("transform class after hook: " + task.transform.getClass())
                         break
@@ -102,8 +101,10 @@ public class SystemTraceTransform extends BaseProxyTransform {
         }
 
         MethodCollector methodCollector = new MethodCollector(traceConfig, mappingCollector)
+        // 收集源代码和jar文件中的所有方法
         HashMap<String, TraceMethod> collectedMethodMap = methodCollector.collect(scrInputMap.keySet().toList(), jarInputMap.keySet().toList())
         MethodTracer methodTracer = new MethodTracer(traceConfig, collectedMethodMap, methodCollector.getCollectedClassExtendMap())
+        // 对所有的方法插桩代码
         methodTracer.trace(scrInputMap, jarInputMap)
         origTransform.transform(transformInvocation)
         Log.i("Systrace." + getName(), "[transform] cost time: %dms", System.currentTimeMillis() - start)
